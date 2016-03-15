@@ -11,25 +11,25 @@ var net = require('./util/net');
 
 if(process.argv.length<3)
 {
-    console.log("usage: test.js [password]");
+    console.log("usage: test.js [ipc path] [password]");
     process.exit(1);
 }
 
 var web3 = new Web3();
-web3.setProvider(new web3.providers.IpcProvider('/home/vic/.ethereum/testnet/geth.ipc', net));
+web3.setProvider(new web3.providers.IpcProvider(process.argv[2], net));
 
-if(web3.eth.accounts.length<2)
+if(web3.eth.accounts.length<3)
 {
     console.log("required min 2 ethereum accounts");
     process.exit(1);
 }
 
-var result = web3.personal.unlockAccount(web3.eth.accounts[0], process.argv[2]);
+var result = web3.personal.unlockAccount(web3.eth.accounts[0], process.argv[3]);
 console.log(web3.eth.accounts[0], " unlock : ",result)
 if(!result) process.exit(1);
 
 
-result = web3.personal.unlockAccount(web3.eth.accounts[1], process.argv[2]);
+result = web3.personal.unlockAccount(web3.eth.accounts[1], process.argv[3]);
 console.log(web3.eth.accounts[1], " unlock : ",result)
 if(!result) process.exit(1);
 
