@@ -1,0 +1,20 @@
+{
+  "name": "bitprofile-contract",
+  "preferGlobal": false,
+  "version": "1.0.0",
+  "author": "Victor Bucataru <ping@devktor.com>",
+  "description": "bitprofile contract definitions",
+  "contributors": [ 
+    {
+      "name": "Victor Bucataru",
+      "email": "ping@devktor.com"
+    } 
+  ],
+  "dependencies" : {},
+  "license": "MIT",
+  "main": "BitProfile.js",
+  "engines": {
+    "node": "*"
+  }
+}
+

@@ -1,0 +1,12 @@
+  "@Contract_Name@":{
+    "code":"@Contract_Code@",
+    "info":{
+      "source":"@Contract_Source@",
+      "language": "Solidity",
+      "languageVersion": "@SOLC_VERSION@",
+      "compilerVersion": "@SOLC_VERSION@",
+      "abiDefinition": @Contract_ABI@,
+      "userDoc": @Contract_DOCUSER@,
+      "developerDoc": @Contract_DOCDEV@
+    }
+  }

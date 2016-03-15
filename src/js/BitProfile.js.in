@@ -1,0 +1,5 @@
+var BitProfile = {
+@BitProfile_JSON@
+};
+
+module.exports = BitProfile;
