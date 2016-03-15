@@ -1,0 +1,25 @@
+{
+  "name": "bitprofile-test",
+  "preferGlobal": false,
+  "version": "1.0.0",
+  "author": "Victor Bucataru <ping@devktor.com>",
+  "description": "",
+  "contributors": [ 
+    {
+      "name": "Victor Bucataru",
+      "email": "ping@devktor.com"
+    } 
+  ],
+  "dependencies" : {
+    "cli-color":"*",
+    "web3": "*",
+    "deasync" : "*",
+    "bitprofile-contract": "*"
+  },
+  "license": "MIT",
+  "main": "test.js",
+  "engines": {
+    "node": "*"
+  }
+}
+
