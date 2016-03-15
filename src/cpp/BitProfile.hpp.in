@@ -1,0 +1,11 @@
+#pragma once
+
+namespace BitProfile{
+
+struct Contract
+{
+@BitProfile_HPP@
+};
+
+
+}

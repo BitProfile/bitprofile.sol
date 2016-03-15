@@ -1,0 +1,7 @@
+#include "Contract.hpp"
+
+namespace BitProfile{
+
+@BitProfile_CPP@
+
+}
