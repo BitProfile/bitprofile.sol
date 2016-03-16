@@ -18,7 +18,8 @@ if(process.argv.length<3)
 var web3 = new Web3();
 web3.setProvider(new web3.providers.IpcProvider(process.argv[2], net));
 
-if(web3.eth.accounts.length<3)
+var accounts = web3.eth.accounts;
+if(accounts.length<2)
 {
     console.log("required min 2 ethereum accounts");
     process.exit(1);
