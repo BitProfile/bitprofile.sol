@@ -16,8 +16,9 @@ MasterRegistrarTest.prototype.initialize = function(){
     this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
     this.master = deploy(this.web3, BitProfile.MasterRegistrar, [20, 1]);
     this.start = this.web3.eth.blockNumber;
+    this.factory = deploy(this.web3, BitProfile.RegistrarFactory);
+    if(!execute(this.web3, this.master.setFactory, this.master, [this.factory.address])) return false;
     return this.master!=false;
-    return true;
 }
 
 
@@ -83,7 +84,7 @@ MasterRegistrarTest.prototype.upgradeRegistrarBetaExpired = function(){
 
 MasterRegistrarTest.prototype.upgradeFactoryBetaExpired = function(){
     var factory = deploy(this.web3, BitProfile.RegistrarFactory, []);
-    if(!execute(this.web3, this.master.upgradeFactory, this.master, [factory.address])) return false;
+    if(!execute(this.web3, this.master.setFactory, this.master, [factory.address])) return false;
     var address = this.web3.eth.getStorageAt(this.master.address, 2);
     address = "0x"+address.substr(address.length - 40, address.length);
     if(factory.address==address) return false;
