@@ -18,40 +18,25 @@ contract Registrar is RegistrarInterface
         {
             return false;
         }
-        Profile profile = new Profile(new AddressAuth(tx.origin));
+        Profile profile = new Profile(new AddressAuth(msg.sender));
         context.replace(name, profile);
         return true;
     }
 
-    function link(string name, Profile profile) returns(bool)
+    function link(string name, Profile profile, string authData) returns(bool)
     {
-        if(!profile.authenticate(Auth.Permission.Owner))
+        if(!profile.authenticate(msg.sender, authData, Auth.Permission.Owner))
         {
             return false;
         }
         return context.insert(name, profile);
     }
 
-    function remove(string name) returns(bool)
+
+    function unlink(string name, string authData) returns(bool)
     {
         Profile profile = context.getProfile(name);
-        if(unlink(name, profile))
-        {
-            profile.kill();
-            return true;
-        }
-        return false;
-    }
-
-    function unlink(string name) returns(bool)
-    {
-        Profile profile = context.getProfile(name);
-        return unlink(name, profile);
-    }
-
-    function unlink(string name, Profile profile) private returns(bool)
-    {
-        if(profile.authenticate(Auth.Permission.Owner))
+        if(profile.authenticate(msg.sender, authData, Auth.Permission.Owner))
         {
             context.remove(name);
             return true;
@@ -76,7 +61,7 @@ contract Registrar is RegistrarInterface
 
     function kill() onlyowner
     {
-        suicide(tx.origin);
+        suicide(msg.sender);
     }
 
     function getContext() returns(RegistrarContext)

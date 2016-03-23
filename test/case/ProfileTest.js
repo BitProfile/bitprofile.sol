@@ -19,33 +19,32 @@ ProfileTest.prototype.initialize = function(){
 
 
 ProfileTest.prototype.testAuth = function(){
-    if(!this.profile.authenticate.call(1)) return false;
-    if(!this.profile.authenticate.call(2)) return false;
-    if(!this.profile.authenticate.call(3)) return false;
-    if(this.profile.authenticate.call(4)) return false; //no such permission
+    if(!this.profile.authenticate.call(this.web3.eth.accounts[0], "", 1)) return false;
+    if(!this.profile.authenticate.call(this.web3.eth.accounts[0], "", 2)) return false;
+    if(!this.profile.authenticate.call(this.web3.eth.accounts[0], "", 3)) return false;
+    if(this.profile.authenticate.call(this.web3.eth.accounts[0], "", 4)) return false; //no such permission
     return true;
 }
 
 
 ProfileTest.prototype.testAuthFailed = function(){
-    this.web3.eth.defaultAccount = this.web3.eth.accounts[1];
-    if(this.profile.authenticate.call(1)) return false;
-    if(this.profile.authenticate.call(2)) return false;
-    if(this.profile.authenticate.call(3)) return false;
+    if(this.profile.authenticate.call(this.web3.eth.accounts[1], "", 1)) return false;
+    if(this.profile.authenticate.call(this.web3.eth.accounts[1], "", 2)) return false;
+    if(this.profile.authenticate.call(this.web3.eth.accounts[1], "", 3)) return false;
     return true;
 }
 
 
 ProfileTest.prototype.testEdit = function(){
     this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
-    if(!execute(this.web3, this.profile.set, this.profile, ["foo", "bar"])) return false;
+    if(!execute(this.web3, this.profile.set, this.profile, ["foo", "bar", ""])) return false;
     return this.profile.get.call("foo") == "bar";
 }
 
 
 ProfileTest.prototype.testEditError = function(){
     this.web3.eth.defaultAccount = this.web3.eth.accounts[1];
-    if(!execute(this.web3, this.profile.set, this.profile, ["bar", "foo"])) return false;
+    if(!execute(this.web3, this.profile.set, this.profile, ["bar", "foo", ""])) return false;
     return !this.profile.get.call("bar");
 }
 
@@ -53,17 +52,15 @@ ProfileTest.prototype.testEditError = function(){
 ProfileTest.prototype.testTransfer = function(){
     this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
     var auth = deploy(this.web3, BitProfile.AddressAuth, [this.web3.eth.accounts[1]]);
-    if(!execute(this.web3, this.profile.transfer, this.profile, [auth.address])) return false;
+    if(!execute(this.web3, this.profile.transfer, this.profile, [auth.address, ""])) return false;
 
-    this.web3.eth.defaultAccount = this.web3.eth.accounts[1];
-    if(!this.profile.authenticate.call(1)) return false;
-    if(!this.profile.authenticate.call(2)) return false;
-    if(!this.profile.authenticate.call(3)) return false;
+    if(!this.profile.authenticate.call(this.web3.eth.accounts[1], "", 1)) return false;
+    if(!this.profile.authenticate.call(this.web3.eth.accounts[1], "", 2)) return false;
+    if(!this.profile.authenticate.call(this.web3.eth.accounts[1], "", 3)) return false;
 
-    this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
-    if(this.profile.authenticate.call(1)) return false;
-    if(this.profile.authenticate.call(2)) return false;
-    if(this.profile.authenticate.call(3)) return false;
+    if(this.profile.authenticate.call(this.web3.eth.accounts[0], "", 1)) return false;
+    if(this.profile.authenticate.call(this.web3.eth.accounts[0], "", 2)) return false;
+    if(this.profile.authenticate.call(this.web3.eth.accounts[0], "", 3)) return false;
     return true;
 }
 
@@ -71,17 +68,15 @@ ProfileTest.prototype.testTransfer = function(){
 ProfileTest.prototype.testTransferError = function(){
     this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
     var auth = deploy(this.web3, BitProfile.AddressAuth, [this.web3.eth.accounts[0]]);
-    if(!execute(this.web3, this.profile.transfer, this.profile, [auth.address])) return false;
+    if(!execute(this.web3, this.profile.transfer, this.profile, [auth.address, ""])) return false;
 
-    this.web3.eth.defaultAccount = this.web3.eth.accounts[1];
-    if(!this.profile.authenticate.call(1)) return false;
-    if(!this.profile.authenticate.call(2)) return false;
-    if(!this.profile.authenticate.call(3)) return false;
+    if(!this.profile.authenticate.call(this.web3.eth.accounts[1], "", 1)) return false;
+    if(!this.profile.authenticate.call(this.web3.eth.accounts[1], "", 2)) return false;
+    if(!this.profile.authenticate.call(this.web3.eth.accounts[1], "", 3)) return false;
 
-    this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
-    if(this.profile.authenticate.call(1)) return false;
-    if(this.profile.authenticate.call(2)) return false;
-    if(this.profile.authenticate.call(3)) return false;
+    if(this.profile.authenticate.call(this.web3.eth.accounts[0], "", 1)) return false;
+    if(this.profile.authenticate.call(this.web3.eth.accounts[0], "", 2)) return false;
+    if(this.profile.authenticate.call(this.web3.eth.accounts[0], "", 3)) return false;
     return true;
 }
 

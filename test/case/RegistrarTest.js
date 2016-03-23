@@ -30,9 +30,9 @@ RegistrarTest.prototype.createProfile = function()
     var info = this.registrar.get.call("foo");
     var profile = construct(this.web3, BitProfile.Profile, info[0]);
 
-    if(!profile.authenticate.call(1)) return false;
-    if(!profile.authenticate.call(2)) return false;
-    if(!profile.authenticate.call(3)) return false;
+    if(!profile.authenticate.call(this.web3.eth.accounts[0], "", 1)) return false;
+    if(!profile.authenticate.call(this.web3.eth.accounts[0], "", 2)) return false;
+    if(!profile.authenticate.call(this.web3.eth.accounts[0], "", 3)) return false;
 
     return true;
 }
@@ -47,9 +47,9 @@ RegistrarTest.prototype.createProfileError = function()
     var info = this.registrar.get.call("foo");
     var profile = construct(this.web3, BitProfile.Profile, info[0]);
 
-    if(profile.authenticate.call(1)) return false;
-    if(profile.authenticate.call(2)) return false;
-    if(profile.authenticate.call(3)) return false;
+    if(profile.authenticate.call(this.web3.eth.accounts[1], "", 1)) return false;
+    if(profile.authenticate.call(this.web3.eth.accounts[1], "", 2)) return false;
+    if(profile.authenticate.call(this.web3.eth.accounts[1], "", 3)) return false;
 
     return true;
 }
@@ -60,7 +60,7 @@ RegistrarTest.prototype.linkProfile = function(){
     var auth = deploy(this.web3, BitProfile.AddressAuth, [this.web3.eth.defaultAccount]);
     var profile = deploy(this.web3, BitProfile.Profile, [auth.address]);
     if(!profile) return false;
-    if(!execute(this.web3, this.registrar.link, this.registrar, ["bar", profile.address])) return false;
+    if(!execute(this.web3, this.registrar.link, this.registrar, ["bar", profile.address, ""])) return false;
     if(!this.registrar.contains.call("bar")) return false;
     var info = this.registrar.get.call("bar");
     return info[0]==profile.address
@@ -72,7 +72,7 @@ RegistrarTest.prototype.linkProfileAuthError = function(){
     var profile = deploy(this.web3, BitProfile.Profile, [auth.address]);
     if(!profile) return false;
     this.web3.eth.defaultAccount = this.web3.eth.accounts[1];
-    if(!execute(this.web3, this.registrar.link, this.registrar, ["foobar", profile.address])) return false;
+    if(!execute(this.web3, this.registrar.link, this.registrar, ["foobar", profile.address, ""])) return false;
     if(this.registrar.contains.call("foobar")) return false;
     return true;
 }
@@ -82,7 +82,7 @@ RegistrarTest.prototype.linkProfileDuplicateError = function(){
     var auth = deploy(this.web3, BitProfile.AddressAuth, [this.web3.eth.defaultAccount]);
     var profile = deploy(this.web3, BitProfile.Profile, [auth.address]);
     if(!profile) return false;
-    if(!execute(this.web3, this.registrar.link, this.registrar, ["bar", profile.address])) return false;
+    if(!execute(this.web3, this.registrar.link, this.registrar, ["bar", profile.address, ""])) return false;
     if(this.registrar.contains.call("foobar")) return false;
     return true;
 }
@@ -109,31 +109,16 @@ RegistrarTest.prototype.moveContext = function(){
 
 RegistrarTest.prototype.unlinkProfileAuthError = function()
 {
-    if(!execute(this.web3, this.registrar.unlink, this.registrar, ["bar"], this.web3.eth.accounts[1])) return false;
+    if(!execute(this.web3, this.registrar.unlink, this.registrar, ["bar", ""], this.web3.eth.accounts[1])) return false;
     if(!this.registrar.contains.call("bar")) return false;
     return true;
 }
 
 RegistrarTest.prototype.unlinkProfile = function(){
-    if(!execute(this.web3, this.registrar.unlink, this.registrar, ["bar"], this.web3.eth.accounts[0])) return false;
+    if(!execute(this.web3, this.registrar.unlink, this.registrar, ["bar", ""], this.web3.eth.accounts[0])) return false;
     if(this.registrar.contains.call("bar")) return false;
     return true;
 }
-
-
-RegistrarTest.prototype.removeProfileAuthError = function(){
-    if(!execute(this.web3, this.registrar.remove, this.registrar, ["foo"], this.web3.eth.accounts[1])) return false;
-    if(!this.registrar.contains.call("foo")) return false;
-    return true;
-}
-
-RegistrarTest.prototype.removeProfile = function(){
-    if(!execute(this.web3, this.registrar.remove, this.registrar, ["foo"], this.web3.eth.accounts[0])) return false;
-    if(this.registrar.contains.call("foo")) return false;
-    return true;
-}
-
-
 
 
 

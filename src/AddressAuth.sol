@@ -10,7 +10,7 @@ contract AddressAuth is Auth{
 
     function set(address addr, Permission permission) returns(bool)
     {
-        Permission perm = owners[tx.origin];
+        Permission perm = owners[msg.sender];
         if(perm < Permission.Manage || perm < permission)
         {
             return false;
@@ -22,8 +22,8 @@ contract AddressAuth is Auth{
 
     function remove(address addr) returns(bool)
     {
-        Permission perm = owners[tx.origin];
-        if(perm < Permission.Manage || perm < owners[addr] || tx.origin==addr)
+        Permission perm = owners[msg.sender];
+        if(perm < Permission.Manage || perm < owners[addr] || msg.sender==addr)
         {
             return false;
         }
@@ -32,13 +32,14 @@ contract AddressAuth is Auth{
         return true;
     }
 
-    function authenticate(Permission permission) returns(bool)
+    function authenticate(address addr, string authData, Permission permission) returns(bool)
     {
-        return owners[tx.origin] >= permission;
+        return owners[addr] >= permission;
     }
 
     mapping(address=> Permission) public owners;
 
 
 }
+
 

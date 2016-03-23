@@ -14,9 +14,9 @@ contract Profile {
         auth = owner;
     }
 
-    function authenticate(Auth.Permission permission) returns(bool)
+    function authenticate(address addr, string authData, Auth.Permission permission) returns(bool)
     {
-        return auth.authenticate(permission);
+        return auth.authenticate(addr, authData, permission);
     }
 
     function get(string key) returns(string)
@@ -24,30 +24,30 @@ contract Profile {
         return data[key];
     }
 
-    function set(string key, string value) authenticated(Auth.Permission.Edit)
+    function set(string key, string value, string authData) authenticated(authData, Auth.Permission.Edit)
     {
         data[key] = value;
         Change(key, value);
     }
 
-    function clear(string key) authenticated(Auth.Permission.Edit)
+    function clear(string key, string authData) authenticated(authData, Auth.Permission.Edit)
     {
         delete data[key];
     }
 
-    function transfer(Auth owner) authenticated(Auth.Permission.Owner)
+    function transfer(Auth owner, string authData) authenticated(authData, Auth.Permission.Owner)
     {
         auth = owner;
     }
 
-    function kill() authenticated(Auth.Permission.Owner)
+    function kill(string authData) authenticated(authData, Auth.Permission.Owner)
     {
         suicide(msg.sender);
     }
 
     function() { throw; }
 
-    modifier authenticated(Auth.Permission permission) { if (auth.authenticate(permission)) _ }
+    modifier authenticated(string authData, Auth.Permission permission) { if (auth.authenticate(msg.sender, authData, permission)) _ }
 
 }
 

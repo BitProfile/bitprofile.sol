@@ -2,9 +2,8 @@
 contract RegistrarInterface is Owned
 {
     function register(string) returns(bool);
-    function link(string, Profile) returns(bool);
-    function unlink(string) returns(bool);
-    function remove(string) returns(bool);
+    function link(string, Profile, string authData) returns(bool);
+    function unlink(string, string authData) returns(bool);
     function contains(string) returns(bool);
     function get(string name) returns(Profile, uint);
 
