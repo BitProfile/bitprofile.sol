@@ -9,7 +9,6 @@ contract MasterRegistrar is Owned
     {
         betaTimeout = block.number + betInterval;
         betaLimit = limit;
-        factory = new RegistrarFactory();
     }
 
     function create() returns(bool)
@@ -45,9 +44,9 @@ contract MasterRegistrar is Owned
         }
     }
 
-    function upgradeFactory(RegistrarFactoryInterface upgradeFactory) onlyowner onlybeta
+    function setFactory(RegistrarFactoryInterface newFactory) onlyowner onlybeta
     {
-        factory = upgradeFactory;
+        factory = newFactory;
     }
 
     function upgradeRegistrar(uint index, RegistrarInterface upgraded) onlyowner onlybeta returns(bool)
