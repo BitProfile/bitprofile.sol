@@ -7,6 +7,7 @@ contract Profile {
     );
 
     mapping(string => string) data;
+    mapping(string => Auth.Permission) permissions;
     Auth public auth;
 
     function Profile(Auth owner)
@@ -24,13 +25,23 @@ contract Profile {
         return data[key];
     }
 
-    function set(string key, string value, string authData) authenticated(authData, Auth.Permission.Edit)
+    function set(string key, string value, string authData)
     {
-        data[key] = value;
-        Change(key, value);
+        Auth.Permission permission = permissions[key];
+        if(permission < Auth.Permission.Edit) permission = Auth.Permission.Edit;
+        if(auth.authenticate(msg.sender, authData, permission))
+        {
+            data[key] = value;
+            Change(key, value);
+        }
     }
 
-    function clear(string key, string authData) authenticated(authData, Auth.Permission.Edit)
+    function setPermission(string key, Auth.Permission permission, string authData) authenticated(authData, Auth.Permission.Manage)
+    {
+        permissions[key] = permission;
+    }
+
+    function clear(string key, string authData) authenticated(authData, Auth.Permission.Manage)
     {
         delete data[key];
     }
