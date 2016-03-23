@@ -2,8 +2,29 @@ var net = require('net');
 var deasync = require('deasync');
 
 
-
 net.Socket.prototype.writeSync = function(request){
+
+    var lastError = undefined;
+    var errors = 0;
+    do
+    {
+        try
+        {
+            return this.executeRequest(request);
+        }
+        catch(e)
+        {
+            errors++;
+            lastError = e;
+        }
+    }
+    while(errors<3);
+
+    throw lastError;
+}
+
+
+net.Socket.prototype.executeRequest = function(request){
 
     var buffer = "";
     var readDone = false, writeDone = false;
@@ -13,40 +34,43 @@ net.Socket.prototype.writeSync = function(request){
     var requestJSON = JSON.parse(request);
 
     var readCallback = function(data){
-        var json = JSON.parse(data.toString());
-        if(json["id"]==requestJSON["id"])
+        try
         {
-            buffer += data.toString();
+            var json = JSON.parse(data.toString());
+            if(json["id"]==requestJSON["id"])
+            {
+                buffer += data.toString();
 //            console.log("response: ",buffer);
-            readDone = true;
+                readDone = true;
+            }
         }
-//        else
-//        {
-//            console.log("id not matched : ",data.toString());
-//        }
+        catch(e)
+        {
+            error = e;
+        }
     }
     this.on('data', readCallback);
 
     this.write(request, function(err){
-//        console.log("write done: ",arguments);
         writeDone = true;
         error = err;
-    })
+    });
 
     while(!writeDone){
         deasync.runLoopOnce();
     }
 
-    if(error){
-        throw error;
-    }
-
-    while(!readDone)
+    while(!readDone||!error)
     {
         deasync.runLoopOnce();
     }
 
     this.removeListener("data", readCallback);
+
+    if(error)
+    {
+        throw error;
+    }
 
     return buffer;
 }
