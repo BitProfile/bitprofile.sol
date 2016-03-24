@@ -2,6 +2,7 @@ var BitProfile = require('bitprofile-contract');
 
 var Web3 = require('web3');
 var deploy = require('./util/contract/deploy');
+var net = require('./util/net');
 
 if(process.argv.length<6)
 {
@@ -17,8 +18,12 @@ var result = web3.personal.unlockAccount(process.argv[3], process.argv[4]);
 console.log(process.argv[3], " unlock : ",result)
 if(!result) process.exit(1);
 
+web3.eth.defaultAccount = process.argv[3];
 
-var master = deploy(web3, BitProfile.MasterRegistrar, [process.argv[5], process.argv[6]]);
+var profileFactory = deploy(web3, BitProfile.ProfileFactory, []);
+var registrarFactory = deploy(web3, BitProfile.RegistrarFactory, [profileFactory.address]);
+var master = deploy(web3, BitProfile.MasterRegistrar, [process.argv[5], process.argv[6], registrarFactory.address]);
+
 if(master)
 {
     console.log("master registrar deployed at "+master.address);
