@@ -16,6 +16,7 @@ net.Socket.prototype.writeSync = function(request){
         {
             errors++;
             lastError = e;
+            console.log("got rpc error : ",e);
         }
     }
     while(errors<3);
@@ -60,7 +61,7 @@ net.Socket.prototype.executeRequest = function(request){
         deasync.runLoopOnce();
     }
 
-    while(!readDone||!error)
+    while(!readDone&&!error)
     {
         deasync.runLoopOnce();
     }
