@@ -9,7 +9,7 @@ contract RegistrarInterface is Owned
 
     function moveContext(RegistrarInterface ) onlyowner;
     function setFactory(ProfileFactoryInterface factory) onlyowner;
-    function getContext() returns(RegistrarContext);
+    function getContext() returns(RegistrarContextInterface);
     function kill() onlyowner;
 
     function() { throw; }

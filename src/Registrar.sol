@@ -3,10 +3,10 @@
 contract Registrar is RegistrarInterface
 {
 
-    RegistrarContext context;
+    RegistrarContextInterface context;
     ProfileFactoryInterface factory;
 
-    function Registrar(RegistrarContext ctx, ProfileFactoryInterface profileFactory, address addr)
+    function Registrar(RegistrarContextInterface ctx, ProfileFactoryInterface profileFactory, address addr)
     {
         context = ctx;
         factory = profileFactory;
@@ -71,7 +71,7 @@ contract Registrar is RegistrarInterface
         suicide(msg.sender);
     }
 
-    function getContext() returns(RegistrarContext)
+    function getContext() returns(RegistrarContextInterface)
     {
         return context;
     }

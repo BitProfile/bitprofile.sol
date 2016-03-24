@@ -1,13 +1,7 @@
 
 
-contract RegistrarContext is Owned
+contract RegistrarContext is RegistrarContextInterface
 {
-    struct ProfileLink
-    {
-        ProfileInterface profile;
-        uint timestamp;
-    }
-
     mapping(string => ProfileLink) profiles;
 
 

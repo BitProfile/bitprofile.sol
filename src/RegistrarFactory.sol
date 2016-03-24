@@ -15,7 +15,7 @@ contract RegistrarFactory is RegistrarFactoryInterface
         return registrar;
     }
 
-    function create(RegistrarContext context) returns(RegistrarInterface)
+    function create(RegistrarContextInterface context) returns(RegistrarInterface)
     {
         return new Registrar(context, factory, msg.sender);
     }
