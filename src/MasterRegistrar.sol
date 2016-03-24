@@ -5,10 +5,11 @@ contract MasterRegistrar is Owned
     uint betaTimeout;
     uint betaLimit;
 
-    function MasterRegistrar(uint betInterval, uint limit)
+    function MasterRegistrar(uint betInterval, uint limit, RegistrarFactoryInterface fctr)
     {
         betaTimeout = block.number + betInterval;
         betaLimit = limit;
+        factory = fctr;
     }
 
     function create() returns(bool)
