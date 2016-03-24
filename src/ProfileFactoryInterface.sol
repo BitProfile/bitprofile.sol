@@ -1,4 +1,4 @@
 contract ProfileFactoryInterface 
 {
-    function create(address addr) returns(ProfileInterface);
+    function create(address addr, string authData) returns(ProfileInterface);
 }

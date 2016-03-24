@@ -14,13 +14,13 @@ contract Registrar is RegistrarInterface
     }
 
 
-    function register(string name) returns(bool)
+    function register(string name, string authData) returns(bool)
     {
         if(context.contains(name))
         {
             return false;
         }
-        ProfileInterface profile = factory.create(msg.sender);
+        ProfileInterface profile = factory.create(msg.sender, authData);
         context.replace(name, profile);
         return true;
     }
@@ -54,6 +54,11 @@ contract Registrar is RegistrarInterface
     function get(string name) returns(ProfileInterface, uint)
     {
         return context.get(name);
+    }
+
+    function getProfile(string name) returns(ProfileInterface)
+    {
+        return context.getProfile(name);
     }
 
     function setFactory(ProfileFactoryInterface newFactory) onlyowner
