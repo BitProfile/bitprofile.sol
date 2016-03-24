@@ -43,7 +43,7 @@ MasterRegistrarTest.prototype.createBetaLimit = function(){
 
 MasterRegistrarTest.prototype.upgradeFactory = function(){
     var factory = deploy(this.web3, BitProfile.RegistrarFactory, []);
-    if(!execute(this.web3, this.master.upgradeFactory, this.master, [factory.address])) return false;
+    if(!execute(this.web3, this.master.setFactory, this.master, [factory.address])) return false;
     var address = this.web3.eth.getStorageAt(this.master.address, 2);
     address = "0x"+address.substr(address.length - 40, address.length);
     if(factory.address!=address) return false;
