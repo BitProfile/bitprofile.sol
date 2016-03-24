@@ -14,10 +14,10 @@ function MasterRegistrarTest(web3)
 MasterRegistrarTest.prototype.initialize = function(){
 
     this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
-    this.master = deploy(this.web3, BitProfile.MasterRegistrar, [20, 1]);
+    var factory = deploy(this.web3, BitProfile.RegistrarFactory, []);
+    if(factory==false) return false;
+    this.master = deploy(this.web3, BitProfile.MasterRegistrar, [20, 1, factory.address]);
     this.start = this.web3.eth.blockNumber;
-    this.factory = deploy(this.web3, BitProfile.RegistrarFactory);
-    if(!execute(this.web3, this.master.setFactory, this.master, [this.factory.address])) return false;
     return this.master!=false;
 }
 

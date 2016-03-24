@@ -5,7 +5,7 @@ module.exports = function(web3, Definition, params, account, gas){
     var Contract = web3.eth.contract(Definition.info.abiDefinition);
     var address = error = undefined;
     var args = params||[];
-    args.push({from: account||web3.eth.defaultAccount, gas: gas||4200000, data: Definition.code});
+    args.push({from: account||web3.eth.defaultAccount, gas: gas||4300000, data: Definition.code});
     args.push(function(e, result){
         error = e;
         if(!e)
