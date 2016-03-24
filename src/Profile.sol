@@ -25,15 +25,10 @@ contract Profile {
         return data[key];
     }
 
-    function set(string key, string value, string authData)
+    function set(string key, string value, string authData) editPermission(key, authData)
     {
-        Auth.Permission permission = permissions[key];
-        if(permission < Auth.Permission.Edit) permission = Auth.Permission.Edit;
-        if(auth.authenticate(msg.sender, authData, permission))
-        {
-            data[key] = value;
-            Change(key, value);
-        }
+        data[key] = value;
+        Change(key, value);
     }
 
     function setPermission(string key, Auth.Permission permission, string authData) authenticated(authData, Auth.Permission.Manage)
@@ -41,7 +36,7 @@ contract Profile {
         permissions[key] = permission;
     }
 
-    function clear(string key, string authData) authenticated(authData, Auth.Permission.Manage)
+    function clear(string key, string authData) editPermission(key, authData)
     {
         delete data[key];
     }
@@ -56,9 +51,16 @@ contract Profile {
         suicide(msg.sender);
     }
 
+
     function() { throw; }
 
     modifier authenticated(string authData, Auth.Permission permission) { if (auth.authenticate(msg.sender, authData, permission)) _ }
+    modifier editPermission(string key, string authData)
+    {
+        Auth.Permission permission = permissions[key];
+        if(permission < Auth.Permission.Edit) permission = Auth.Permission.Edit;
+        if(auth.authenticate(msg.sender, authData, permission)) _
+    }
 
 }
 
