@@ -2,7 +2,7 @@
 
 namespace BitProfile{
 
-struct Contract
+struct ContractCode
 {
 @BitProfile_HPP@
 };

@@ -1,4 +1,4 @@
-#include "Contract.hpp"
+#include "ContractCode.hpp"
 
 namespace BitProfile{
 

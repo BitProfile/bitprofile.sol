@@ -1,2 +1,2 @@
 
-const char * Contract::@Contract_Name@ = "@Contract_Code@";
+const char * ContractCode::@Contract_Name@ = "@Contract_Code@";
