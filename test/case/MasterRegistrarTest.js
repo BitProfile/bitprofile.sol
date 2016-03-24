@@ -14,9 +14,9 @@ function MasterRegistrarTest(web3)
 MasterRegistrarTest.prototype.initialize = function(){
 
     this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
-    var factory = deploy(this.web3, BitProfile.RegistrarFactory, []);
-    if(factory==false) return false;
-    this.master = deploy(this.web3, BitProfile.MasterRegistrar, [20, 1, factory.address]);
+    var profileFactory = deploy(this.web3, BitProfile.ProfileFactory, []);
+    var registrarFactory = deploy(this.web3, BitProfile.RegistrarFactory, [profileFactory.address]);
+    this.master = deploy(this.web3, BitProfile.MasterRegistrar, [20, 1, registrarFactory.address]);
     this.start = this.web3.eth.blockNumber;
     return this.master!=false;
 }

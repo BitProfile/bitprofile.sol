@@ -4,8 +4,12 @@ set(BITPROFILE_SOL ${CMAKE_CURRENT_BINARY_DIR}/bitprofile.sol)
 set(SOL_FILES 
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Auth.sol
     ${CMAKE_CURRENT_SOURCE_DIR}/src/AddressAuth.sol
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ProfileInterface.sol
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ProfileFactoryInterface.sol
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Profile.sol
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/ProfileFactory.sol
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Owned.sol
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/RegistrarContextInterface.sol
     ${CMAKE_CURRENT_SOURCE_DIR}/src/RegistrarInterface.sol
     ${CMAKE_CURRENT_SOURCE_DIR}/src/RegistrarFactoryInterface.sol
     ${CMAKE_CURRENT_SOURCE_DIR}/src/RegistrarContext.sol

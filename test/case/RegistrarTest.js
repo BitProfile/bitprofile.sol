@@ -14,7 +14,8 @@ RegistrarTest.prototype.initialize = function(){
 
     this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
     var context = deploy(this.web3, BitProfile.RegistrarContext);
-    this.registrar = deploy(this.web3, BitProfile.Registrar, [context.address, this.web3.eth.defaultAccount]);
+    this.factory = deploy(this.web3, BitProfile.ProfileFactory);
+    this.registrar = deploy(this.web3, BitProfile.Registrar, [context.address, this.factory.address, this.web3.eth.defaultAccount]);
     if(!execute(this.web3, context.transfer, context, [this.registrar.address])) return false;
     return this.registrar!=false;
 }
@@ -91,7 +92,7 @@ RegistrarTest.prototype.moveContext = function(){
     this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
     var context = this.registrar.getContext.call();
     if(!context) return false;
-    var registrar = deploy(this.web3, BitProfile.Registrar, [context, this.web3.eth.defaultAccount]);
+    var registrar = deploy(this.web3, BitProfile.Registrar, [context, this.factory.address, this.web3.eth.defaultAccount]);
     if(!registrar) return false;
     if(!execute(this.web3, this.registrar.moveContext, this.registrar, [registrar.address])) return false;
     if(!registrar.contains.call("bar")) return false;
