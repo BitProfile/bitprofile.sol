@@ -52,7 +52,8 @@ MasterRegistrarTest.prototype.upgradeFactory = function(){
 
 MasterRegistrarTest.prototype.upgradeRegistrar = function(){
     this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
-    var registrar = deploy(this.web3, BitProfile.Registrar, ["0x0000000000000000000000000000000000000000", this.master.address]);
+    var factory = deploy(this.web3, BitProfile.ProfileFactory);
+    var registrar = deploy(this.web3, BitProfile.Registrar, ["0x0000000000000000000000000000000000000000", factory.address, this.master.address]);
     if(!execute(this.web3, this.master.upgradeRegistrar, this.master, [0, registrar.address])) return false;
     if(this.master.get.call(0)!=registrar.address) return false;
     return true;
@@ -76,7 +77,8 @@ MasterRegistrarTest.prototype.createBetaExpired = function(){
 
 MasterRegistrarTest.prototype.upgradeRegistrarBetaExpired = function(){
     this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
-    var registrar = deploy(this.web3, BitProfile.Registrar, ["0x0000000000000000000000000000000000000000", this.master.address]);
+    var factory = deploy(this.web3, BitProfile.ProfileFactory);
+    var registrar = deploy(this.web3, BitProfile.Registrar, ["0x0000000000000000000000000000000000000000", factory.address, this.master.address]);
     if(!execute(this.web3, this.master.upgradeRegistrar, this.master, [0, registrar.address])) return false;
     if(this.master.get.call(0)==registrar.address) return false;
     return true;
