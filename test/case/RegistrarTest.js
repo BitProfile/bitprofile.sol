@@ -25,7 +25,7 @@ RegistrarTest.prototype.createProfile = function()
 {
     this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
 
-    if(!execute(this.web3, this.registrar.register, this.registrar, ["foo"])) return false;
+    if(!execute(this.web3, this.registrar.register, this.registrar, ["foo", ""])) return false;
     if(!this.registrar.contains.call("foo")) return false;
 
     var info = this.registrar.get.call("foo");
@@ -42,7 +42,7 @@ RegistrarTest.prototype.createProfileError = function()
 {
     this.web3.eth.defaultAccount = this.web3.eth.accounts[1];
 
-    if(!execute(this.web3, this.registrar.register, this.registrar, ["foo"])) return false;
+    if(!execute(this.web3, this.registrar.register, this.registrar, ["foo", ""])) return false;
     if(!this.registrar.contains.call("foo")) return false;
 
     var info = this.registrar.get.call("foo");
@@ -97,10 +97,10 @@ RegistrarTest.prototype.moveContext = function(){
     if(!execute(this.web3, this.registrar.moveContext, this.registrar, [registrar.address])) return false;
     if(!registrar.contains.call("bar")) return false;
 
-    if(!execute(this.web3, registrar.register, registrar, ["foo2"])) return false;
+    if(!execute(this.web3, registrar.register, registrar, ["foo2", ""])) return false;
     if(!registrar.contains.call("foo2")) return false;
 
-    if(!execute(this.web3, this.registrar.register, this.registrar, ["foo3"])) return false;
+    if(!execute(this.web3, this.registrar.register, this.registrar, ["foo3", ""])) return false;
     if(this.registrar.contains.call("foo3")) return false;
 
     this.registrar = registrar;

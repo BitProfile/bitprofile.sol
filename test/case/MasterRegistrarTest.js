@@ -27,7 +27,7 @@ MasterRegistrarTest.prototype.createRegistrar = function(){
     if(!execute(this.web3, this.master.create, this.master, [])) return false;
     if(this.master.size.call()!=1) return false;
     var registrar = construct(this.web3, BitProfile.Registrar, this.master.get.call(0));
-    if(!execute(this.web3, registrar.register, registrar, ["foo"])) return false;
+    if(!execute(this.web3, registrar.register, registrar, ["foo", ""])) return false;
     if(!registrar.contains.call("foo")) return false;
     return true;
 }
