@@ -1,15 +1,22 @@
 contract RegistrarFactory is RegistrarFactoryInterface
 {
+    ProfileFactory factory;
+
+    function RegistrarFactory(ProfileFactory profileFactory)
+    {
+        factory = profileFactory;
+    }
+
     function create() returns(RegistrarInterface)
     {
         RegistrarContext context = new RegistrarContext();
-        Registrar registrar = new Registrar(context, msg.sender);
+        Registrar registrar = new Registrar(context, factory, msg.sender);
         context.transfer(registrar);
         return registrar;
     }
 
     function create(RegistrarContext context) returns(RegistrarInterface)
     {
-        return new Registrar(context, msg.sender);
+        return new Registrar(context, factory, msg.sender);
     }
 }

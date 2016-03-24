@@ -4,10 +4,12 @@ contract Registrar is RegistrarInterface
 {
 
     RegistrarContext context;
+    ProfileFactoryInterface factory;
 
-    function Registrar(RegistrarContext ctx, address addr)
+    function Registrar(RegistrarContext ctx, ProfileFactoryInterface profileFactory, address addr)
     {
         context = ctx;
+        factory = profileFactory;
         owner = addr;
     }
 
@@ -18,12 +20,12 @@ contract Registrar is RegistrarInterface
         {
             return false;
         }
-        Profile profile = new Profile(new AddressAuth(msg.sender));
+        ProfileInterface profile = factory.create(msg.sender);
         context.replace(name, profile);
         return true;
     }
 
-    function link(string name, Profile profile, string authData) returns(bool)
+    function link(string name, ProfileInterface profile, string authData) returns(bool)
     {
         if(!profile.authenticate(msg.sender, authData, Auth.Permission.Owner))
         {
@@ -35,7 +37,7 @@ contract Registrar is RegistrarInterface
 
     function unlink(string name, string authData) returns(bool)
     {
-        Profile profile = context.getProfile(name);
+        ProfileInterface profile = context.getProfile(name);
         if(profile.authenticate(msg.sender, authData, Auth.Permission.Owner))
         {
             context.remove(name);
@@ -49,9 +51,14 @@ contract Registrar is RegistrarInterface
         return context.contains(name);
     }
 
-    function get(string name) returns(Profile, uint)
+    function get(string name) returns(ProfileInterface, uint)
     {
         return context.get(name);
+    }
+
+    function setFactory(ProfileFactoryInterface newFactory) onlyowner
+    {
+        factory = newFactory;
     }
 
     function moveContext(RegistrarInterface registrar) onlyowner

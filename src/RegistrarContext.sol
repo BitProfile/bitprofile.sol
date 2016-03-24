@@ -4,14 +4,14 @@ contract RegistrarContext is Owned
 {
     struct ProfileLink
     {
-        Profile profile;
+        ProfileInterface profile;
         uint timestamp;
     }
 
     mapping(string => ProfileLink) profiles;
 
 
-    function insert(string name, Profile profile) onlyowner returns(bool)
+    function insert(string name, ProfileInterface profile) onlyowner returns(bool)
     {
         if(contains(name))
         {
@@ -21,7 +21,7 @@ contract RegistrarContext is Owned
         return true;
     }
 
-    function replace(string name, Profile profile) onlyowner
+    function replace(string name, ProfileInterface profile) onlyowner
     {
         profiles[name] = ProfileLink(profile, block.timestamp);
     }
@@ -38,13 +38,13 @@ contract RegistrarContext is Owned
     }
 
 
-    function getProfile(string name) returns(Profile)
+    function getProfile(string name) returns(ProfileInterface)
     {
         return profiles[name].profile;
     }
 
 
-    function get(string name) returns(Profile, uint)
+    function get(string name) returns(ProfileInterface, uint)
     {
         ProfileLink link = profiles[name];
         return (link.profile, link.timestamp);

@@ -63,6 +63,25 @@ contract MasterRegistrar is Owned
         return true;
     }
 
+    function upgradeProfileFactory(uint index, ProfileFactoryInterface newFactory) onlyowner onlybeta returns(bool)
+    {
+        if(index >= context.length)
+        {
+            return false;
+        }
+        RegistrarInterface registrar = context[index];
+        registrar.setFactory(newFactory);
+        return true;
+    }
+
+    function upgradeProfileFactory(ProfileFactoryInterface newFactory) onlyowner onlybeta
+    {
+        for(var i=0; i<context.length; i++)
+        {
+            context[i].setFactory(newFactory);
+        }
+    }
+
     function beta() returns(bool)
     {
         return (betaTimeout>block.number);

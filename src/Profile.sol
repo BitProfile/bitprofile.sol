@@ -1,5 +1,6 @@
 
-contract Profile {
+contract Profile is ProfileInterface
+{
 
     event Change(
         string key,
