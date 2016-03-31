@@ -2,10 +2,10 @@
 
 contract RegistrarContext is RegistrarContextInterface
 {
-    mapping(string => ProfileLink) profiles;
+    mapping(bytes32 => ProfileLink) profiles;
 
 
-    function insert(string name, ProfileInterface profile) onlyowner returns(bool)
+    function insert(bytes32 name, ProfileInterface profile) onlyowner returns(bool)
     {
         if(contains(name))
         {
@@ -15,34 +15,33 @@ contract RegistrarContext is RegistrarContextInterface
         return true;
     }
 
-    function replace(string name, ProfileInterface profile) onlyowner
+    function replace(bytes32 name, ProfileInterface profile) onlyowner
     {
         profiles[name] = ProfileLink(profile, block.timestamp);
     }
 
 
-    function contains(string name) returns(bool)
+    function contains(bytes32 name) returns(bool)
     {
         return profiles[name].timestamp!=0;
     }
 
-    function remove(string name) onlyowner
+    function remove(bytes32 name) onlyowner
     {
         delete profiles[name];
     }
 
 
-    function getProfile(string name) returns(ProfileInterface)
+    function getProfile(bytes32 name) returns(ProfileInterface)
     {
         return profiles[name].profile;
     }
 
 
-    function get(string name) returns(ProfileInterface, uint)
+    function get(bytes32 name) returns(ProfileInterface, uint)
     {
         ProfileLink link = profiles[name];
         return (link.profile, link.timestamp);
     }
-
 
 }

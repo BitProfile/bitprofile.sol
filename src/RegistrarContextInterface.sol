@@ -8,12 +8,12 @@ contract RegistrarContextInterface is Owned
         uint timestamp;
     }
 
-    function insert(string name, ProfileInterface profile) onlyowner returns(bool);
-    function replace(string name, ProfileInterface profile) onlyowner;
-    function contains(string name) returns(bool);
-    function remove(string name) onlyowner;
-    function getProfile(string name) returns(ProfileInterface);
-    function get(string name) returns(ProfileInterface, uint);
+    function insert(bytes32 name, ProfileInterface profile) onlyowner returns(bool);
+    function replace(bytes32 name, ProfileInterface profile) onlyowner;
+    function contains(bytes32 name) returns(bool);
+    function remove(bytes32 name) onlyowner;
+    function getProfile(bytes32 name) returns(ProfileInterface);
+    function get(bytes32 name) returns(ProfileInterface, uint);
 
 
 }

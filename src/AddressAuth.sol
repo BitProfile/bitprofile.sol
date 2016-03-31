@@ -32,7 +32,7 @@ contract AddressAuth is Auth{
         return true;
     }
 
-    function authenticate(address addr, string authData, Permission permission) returns(bool)
+    function authenticate(address addr, bytes authData, Permission permission) returns(bool)
     {
         return owners[addr] >= permission;
     }

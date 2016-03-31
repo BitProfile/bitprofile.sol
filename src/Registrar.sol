@@ -14,28 +14,30 @@ contract Registrar is RegistrarInterface
     }
 
 
-    function register(string name, string authData) returns(bool)
+    function register(bytes32 name, bytes authData) returns(bool)
     {
         if(context.contains(name))
         {
             return false;
         }
+
         ProfileInterface profile = factory.create(msg.sender, authData);
         context.replace(name, profile);
         return true;
     }
 
-    function link(string name, ProfileInterface profile, string authData) returns(bool)
+    function link(bytes32 name, ProfileInterface profile, bytes authData) returns(bool)
     {
         if(!profile.authenticate(msg.sender, authData, Auth.Permission.Owner))
         {
             return false;
         }
+
         return context.insert(name, profile);
     }
 
 
-    function unlink(string name, string authData) returns(bool)
+    function unlink(bytes32 name, bytes authData) returns(bool)
     {
         ProfileInterface profile = context.getProfile(name);
         if(profile.authenticate(msg.sender, authData, Auth.Permission.Owner))
@@ -46,17 +48,17 @@ contract Registrar is RegistrarInterface
         return false;
     }
 
-    function contains(string name) returns(bool)
+    function contains(bytes32 name) returns(bool)
     {
         return context.contains(name);
     }
 
-    function get(string name) returns(ProfileInterface, uint)
+    function get(bytes32 name) returns(ProfileInterface, uint)
     {
         return context.get(name);
     }
 
-    function getProfile(string name) returns(ProfileInterface)
+    function getProfile(bytes32 name) returns(ProfileInterface)
     {
         return context.getProfile(name);
     }
@@ -79,6 +81,11 @@ contract Registrar is RegistrarInterface
     function getContext() returns(RegistrarContextInterface)
     {
         return context;
+    }
+
+    function getFactory() returns(ProfileFactoryInterface)
+    {
+        return factory;
     }
 
 }

@@ -16,7 +16,7 @@ contract Profile is ProfileInterface
         auth = owner;
     }
 
-    function authenticate(address addr, string authData, Auth.Permission permission) returns(bool)
+    function authenticate(address addr, bytes authData, Auth.Permission permission) returns(bool)
     {
         return auth.authenticate(addr, authData, permission);
     }
@@ -26,28 +26,28 @@ contract Profile is ProfileInterface
         return data[key];
     }
 
-    function set(string key, string value, string authData) editPermission(key, authData)
+    function set(string key, string value, bytes authData) editPermission(key, authData)
     {
         data[key] = value;
         Change(key, value);
     }
 
-    function setPermission(string key, Auth.Permission permission, string authData) authenticated(authData, Auth.Permission.Manage)
+    function setPermission(string key, Auth.Permission permission, bytes authData) authenticated(authData, Auth.Permission.Manage)
     {
         permissions[key] = permission;
     }
 
-    function clear(string key, string authData) editPermission(key, authData)
+    function clear(string key, bytes authData) editPermission(key, authData)
     {
         delete data[key];
     }
 
-    function transfer(Auth owner, string authData) authenticated(authData, Auth.Permission.Owner)
+    function transfer(Auth owner, bytes authData) authenticated(authData, Auth.Permission.Owner)
     {
         auth = owner;
     }
 
-    function kill(string authData) authenticated(authData, Auth.Permission.Owner)
+    function kill(bytes authData) authenticated(authData, Auth.Permission.Owner)
     {
         suicide(msg.sender);
     }
@@ -55,8 +55,8 @@ contract Profile is ProfileInterface
 
     function() { throw; }
 
-    modifier authenticated(string authData, Auth.Permission permission) { if (auth.authenticate(msg.sender, authData, permission)) _ }
-    modifier editPermission(string key, string authData)
+    modifier authenticated(bytes authData, Auth.Permission permission) { if (auth.authenticate(msg.sender, authData, permission)) _ }
+    modifier editPermission(string key, bytes authData)
     {
         Auth.Permission permission = permissions[key];
         if(permission < Auth.Permission.Edit) permission = Auth.Permission.Edit;
