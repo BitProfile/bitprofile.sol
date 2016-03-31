@@ -38,6 +38,25 @@ RegistrarTest.prototype.createProfile = function()
     return true;
 }
 
+RegistrarTest.prototype.invalidName = function()
+{
+    this.web3.eth.defaultAccount = this.web3.eth.accounts[0];
+
+    if(!execute(this.web3, this.registrar.register, this.registrar, ["foO_+", ""])) return false;
+    if(this.registrar.contains.call("foO_+")) return false;
+
+    if(!execute(this.web3, this.registrar.register, this.registrar, ["foo+", ""])) return false;
+    if(this.registrar.contains.call("foo+")) return false;
+
+    if(!execute(this.web3, this.registrar.register, this.registrar, ["foO", ""])) return false;
+    if(this.registrar.contains.call("foO")) return false;
+
+    if(!execute(this.web3, this.registrar.register, this.registrar, ["foo@", ""])) return false;
+    if(this.registrar.contains.call("foo@")) return false;
+    return true;
+}
+
+
 RegistrarTest.prototype.createProfileError = function()
 {
     this.web3.eth.defaultAccount = this.web3.eth.accounts[1];
