@@ -3,12 +3,12 @@ contract Profile is ProfileInterface
 {
 
     event Change(
-        string key,
-        string value
+        bytes32 key,
+        bytes value
     );
 
-    mapping(string => string) data;
-    mapping(string => Auth.Permission) permissions;
+    mapping(bytes32 => bytes) data;
+    mapping(bytes32 => Auth.Permission) permissions;
     Auth public auth;
 
     function Profile(Auth owner)
@@ -21,23 +21,23 @@ contract Profile is ProfileInterface
         return auth.authenticate(addr, authData, permission);
     }
 
-    function get(string key) returns(string)
+    function get(bytes32 key) returns(bytes)
     {
         return data[key];
     }
 
-    function set(string key, string value, bytes authData) editPermission(key, authData)
+    function set(bytes32 key, bytes value, bytes authData) editPermission(key, authData)
     {
         data[key] = value;
         Change(key, value);
     }
 
-    function setPermission(string key, Auth.Permission permission, bytes authData) authenticated(authData, Auth.Permission.Manage)
+    function setPermission(bytes32 key, Auth.Permission permission, bytes authData) authenticated(authData, Auth.Permission.Manage)
     {
         permissions[key] = permission;
     }
 
-    function clear(string key, bytes authData) editPermission(key, authData)
+    function clear(bytes32 key, bytes authData) editPermission(key, authData)
     {
         delete data[key];
     }
@@ -56,7 +56,7 @@ contract Profile is ProfileInterface
     function() { throw; }
 
     modifier authenticated(bytes authData, Auth.Permission permission) { if (auth.authenticate(msg.sender, authData, permission)) _ }
-    modifier editPermission(string key, bytes authData)
+    modifier editPermission(bytes32 key, bytes authData)
     {
         Auth.Permission permission = permissions[key];
         if(permission < Auth.Permission.Edit) permission = Auth.Permission.Edit;
