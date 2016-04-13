@@ -26,7 +26,7 @@ foreach(SRC_FILE ${SOL_FILES})
 endforeach()
 
 
-execute_process(COMMAND ${SOLC_BIN} --bin --abi --userdoc --devdoc --optimize -o ${CMAKE_CURRENT_BINARY_DIR}/obj ${BITPROFILE_SOL})
+execute_process(COMMAND ${SOLC_BIN} --bin --abi --userdoc --devdoc --optimize --optimize-runs=10000 -o ${CMAKE_CURRENT_BINARY_DIR}/obj ${BITPROFILE_SOL})
 
 file(GLOB BIN_FILES ${CMAKE_CURRENT_BINARY_DIR}/obj/*.bin)
 
