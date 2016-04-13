@@ -82,6 +82,16 @@ contract MasterRegistrar is Owned
         }
     }
 
+    function setLimit(uint limit) onlyowner onlybeta returns(bool)
+    {
+        if(limit<context.length)
+        {
+            return false;
+        }
+        betaLimit = limit;
+        return true;
+    }
+
     function beta() returns(bool)
     {
         return (betaTimeout>block.number);
