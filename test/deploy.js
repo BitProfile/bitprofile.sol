@@ -2,6 +2,7 @@ var BitProfile = require('bitprofile-contract');
 
 var Web3 = require('web3');
 var deploy = require('./util/contract/deploy');
+var execute = require('./util/contract/execute');
 var net = require('./util/net');
 
 if(process.argv.length<6)
@@ -31,6 +32,11 @@ if(master)
 else
 {
     console.log("failed to deploy master registrar");
+}
+
+if(!execute(web3, master.create, master, []))
+{
+    console.log("failed to create registrar");
 }
 
 process.exit(0);
