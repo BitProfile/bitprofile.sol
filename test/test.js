@@ -11,7 +11,7 @@ var net = require('./util/net');
 
 if(process.argv.length<3)
 {
-    console.log("usage: test.js [ipc path] [password]");
+    console.log("usage: test.js [ipc path]");
     process.exit(1);
 }
 
